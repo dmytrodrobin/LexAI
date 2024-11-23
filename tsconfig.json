@@ -6,6 +6,7 @@
     "sourceMap": true,
     "noImplicitAny": true,
     "skipLibCheck": true,
+    "esModuleInterop": true,
     "lib": ["esnext"]
   },
   "include": ["*src/**/*"]
