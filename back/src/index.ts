@@ -6,6 +6,7 @@ import compression from "compression"
 import cors from "cors"
 import router from "./router"
 import config from "./common/config"
+import mongoose from "mongoose"
 
 const app = express()
 
@@ -23,5 +24,9 @@ const server = http.createServer(app)
 server.listen(config.port, () =>
   console.log(`Server started on port ${config.port}`)
 )
+
+mongoose.Promise = Promise;
+mongoose.connect(config.db);
+mongoose.connection.on('error', console.error)
 
 app.use("/", router())
