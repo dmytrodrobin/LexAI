@@ -1,7 +1,7 @@
 import express from "express"
-import { createUser, getUserByEmail } from "repositories/user"
+import { createUser, getUserByEmail } from "../repositories/user"
 import { random, auth } from "../helpers"
-import { Constants } from "common/constants"
+import { Constants } from "../common/constants"
 
 export async function login(req: express.Request, res: express.Response) {
   try {
