@@ -8,7 +8,8 @@ export async function login(req: express.Request, res: express.Response) {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.sendStatus(400);
+      res.sendStatus(400);
+      return
     }
 
     const user = await getUserByEmail(email).select(
@@ -16,13 +17,15 @@ export async function login(req: express.Request, res: express.Response) {
     );
 
     if (!user) {
-      return res.sendStatus(400);
+      res.sendStatus(400);
+      return
     }
 
     const expectedHash = auth(user.auth.salt, password);
 
     if (user.auth.password !== expectedHash) {
-      return res.sendStatus(403);
+      res.sendStatus(403);
+      return
     }
 
     const salt = random();
@@ -32,10 +35,10 @@ export async function login(req: express.Request, res: express.Response) {
     const cookieData = { sessionToken: user.auth.sessionToken };
     res.cookie(Constants.AuthTokenName, JSON.stringify(cookieData), { path: "/" });
 
-    return res.status(200).json(user).end();
+    res.status(200).json(user).end();
   } catch (e) {
     console.error(e);
-    return res.sendStatus(400);
+    res.sendStatus(400);
   }
 }
 export async function register(req: express.Request, res: express.Response) {
@@ -43,13 +46,15 @@ export async function register(req: express.Request, res: express.Response) {
     const { email, password, username } = req.body;
 
     if (!email || !password || !username) {
-      return res.sendStatus(400);
+      res.sendStatus(400);
+      return
     }
 
     const user = await getUserByEmail(email);
 
     if (user) {
-      return res.sendStatus(400);
+      res.sendStatus(400);
+      return
     }
 
     const salt = random();
@@ -62,9 +67,9 @@ export async function register(req: express.Request, res: express.Response) {
       },
     });
 
-    return res.status(200).json(newUser).end();
+    res.status(200).json(newUser).end();
   } catch (e) {
     console.error(e);
-    return res.sendStatus(400);
+    res.sendStatus(400);
   }
 }
