@@ -83,21 +83,14 @@ def custom_retrieve(query: str) -> List[Document]:
     """Return documents with a score higher than 0.8"""
     res = vector_index.similarity_search_with_relevance_scores(query, k=300)
     filtered_docs = [doc for doc, score in res if score > 0.8]
-    return filtered_docs[:50]
+    return filtered_docs[:3]
 
 
 # # RAG chain
 
-# In[6]:
-
-
-import sentencepiece
-print(sentencepiece.__version__) 
-
-
 # In[7]:
 
-
+'''
 from transformers import AutoTokenizer
 
 class MistralTokenizer:
@@ -124,7 +117,7 @@ def filter_for_quota(tokenizer, texts: List[Document]):
             break
 
     return result_texts
-
+'''
 
 # In[8]:
 
@@ -161,7 +154,7 @@ custom_rag_prompt = PromptTemplate.from_template(template)
 
 # In[11]:
 
-
+'''
 def calculate_token_length(tokenizer, text):
     return len(tokenizer.encode(text))
 
@@ -178,7 +171,15 @@ def format_docs(docs, tokenizer, token_limit):
             break
 
     return context
+'''
 
+def format_docs(docs):
+    context = ""
+
+    for doc in docs:
+        context += doc.page_content + "\n\n"
+            
+    return context
 
 # In[12]:
 
@@ -196,7 +197,7 @@ rag_chain = (
 
 def rag_chain_wrapper(query):
     return rag_chain.invoke({
-        "context": format_docs(custom_retrieve(query), mistral_tokenizer, 8000),
+        "context": format_docs(custom_retrieve(query)),
         "question": query
     })
 
