@@ -5,7 +5,7 @@ import {
   getConversationById,
 } from "../repositories/conversation"
 import { createMessage } from "../repositories/message"
-import { addUserConversation } from "repositories/user"
+import { addUserConversation } from "../repositories/user"
 import { get } from "lodash"
 
 export async function sendConversationRequest(
@@ -20,13 +20,16 @@ export async function sendConversationRequest(
       conversation = await getConversationById(conversationId)
 
       if (!conversation) {
-        res.status(400)
+        res.sendStatus(400)
         return
       }
     } else {
       conversation = await createConversation()
       const curUserId = get(req, "identity._id") as string
-
+      if (!curUserId) {
+        res.sendStatus(500)
+        return
+      }
       await addUserConversation(curUserId, conversation._id)
     }
 
@@ -55,14 +58,14 @@ export async function getConversation(
     const { conversationId } = req.params
 
     if (!conversationId) {
-      res.status(400)
+      res.sendStatus(400)
       return
     }
 
     const conversation = await getConversationById(conversationId)
 
     if (!conversation) {
-      res.status(400)
+      res.sendStatus(400)
       return
     }
 

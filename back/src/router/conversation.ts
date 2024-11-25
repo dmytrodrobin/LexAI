@@ -3,9 +3,19 @@ import {
   getConversation,
   sendConversationRequest,
 } from "../controllers/conversation"
-import { isAuthenticated } from "../middleware"
+import { isAuthenticated, isOwner } from "../middleware"
 
 export default (router: express.Router) => {
-  router.post("/conversation", isAuthenticated, sendConversationRequest)
-  router.get("/conversation/:conversationId", getConversation)
+  router.post(
+    "/conversation",
+    isAuthenticated,
+    isOwner,
+    sendConversationRequest
+  )
+  router.get(
+    "/conversation/:conversationId",
+    isAuthenticated,
+    isOwner,
+    getConversation
+  )
 }
