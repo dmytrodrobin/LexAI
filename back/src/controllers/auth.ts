@@ -1,5 +1,5 @@
 import express from "express"
-import { createUser, getUserByEmail } from "../repositories/user"
+import { createUser, getUserByEmail, getUserById } from "../repositories/user"
 import { random, auth } from "../helpers"
 import { Constants } from "../common/constants"
 
@@ -34,8 +34,9 @@ export async function login(req: express.Request, res: express.Response) {
     res.cookie(Constants.AuthTokenName, JSON.stringify(cookieData), {
       path: "/",
     })
-
-    res.status(200).json(user).end()
+    
+    const result = await getUserById(user._id)
+    res.status(200).json(result).end()
   } catch (e) {
     console.error(e)
     res.sendStatus(400)

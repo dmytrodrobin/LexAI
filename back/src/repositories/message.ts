@@ -1,10 +1,12 @@
 import mongoose from "mongoose"
 
-export const MessageSchema = new mongoose.Schema({
-  type: { type: String, required: true },
-  text: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now },
-})
+export const MessageSchema = new mongoose.Schema(
+  {
+    type: { type: String, required: true },
+    text: { type: String, required: true },
+  },
+  { timestamps: true }
+)
 
 export const MessageModel = mongoose.model("message", MessageSchema)
 

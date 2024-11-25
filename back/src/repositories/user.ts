@@ -22,7 +22,13 @@ export const getUserByToken = (sessionToken: string) =>
     "auth.sessionToken": sessionToken,
   })
 
-export const getUserById = (id: string) => UserModel.findById(id)
+export const getUserById = (id: string | Types.ObjectId) =>
+  UserModel.findById(id)
+    .populate({
+      path: "conversations",
+      options: { sort: { updatedAt: "desc" } },
+    })
+    .then((user) => user.toObject())
 
 export const createUser = (values: Record<string, any>) =>
   new UserModel(values).save().then((user) => user.toObject())

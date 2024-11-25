@@ -1,8 +1,11 @@
 import mongoose, { Types } from "mongoose"
 
-const ConversationSchema = new mongoose.Schema({
-  messages: [{ type: mongoose.Schema.Types.ObjectId, ref: "message" }],
-})
+const ConversationSchema = new mongoose.Schema(
+  {
+    messages: [{ type: mongoose.Schema.Types.ObjectId, ref: "message" }],
+  },
+  { timestamps: true }
+)
 
 export const ConversationModel = mongoose.model(
   "conversation",
