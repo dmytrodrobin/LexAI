@@ -7,6 +7,7 @@ import {
 import { createMessage } from "../repositories/message"
 import { addUserConversation } from "../repositories/user"
 import { get } from "lodash"
+import { ragRequest } from "../helpers"
 
 export async function sendConversationRequest(
   req: express.Request,
@@ -37,9 +38,9 @@ export async function sendConversationRequest(
 
     await addConversationMessage(conversation._id, reqMsg._id)
 
-    /// api call to rag
+    const response = await ragRequest(text)
 
-    const resMsg = await createMessage(text, "response")
+    const resMsg = await createMessage(response, "response")
 
     const result = await addConversationMessage(conversation._id, resMsg._id)
 
