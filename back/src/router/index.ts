@@ -1,5 +1,6 @@
 import express from "express"
 import auth from "./auth"
+import conversation from "./conversation"
 
 const router = express.Router()
 
@@ -8,5 +9,6 @@ export default (): express.Router => {
     res.status(200).send("<p>Hello World!</p>")
   })
   auth(router)
+  conversation(router)
   return router
 }
