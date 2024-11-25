@@ -26,8 +26,14 @@ export const getUserById = (id: string | Types.ObjectId) =>
   UserModel.findById(id)
     .populate({
       path: "conversations",
-      options: { sort: { updatedAt: "desc" } },
-    })
+      options: {
+        sort: { updatedAt: "desc" },
+        populate: {
+          path: "messages",
+          options: { sort: { createdAt: "asc" }, limit: 1 },
+        },
+      },
+    }).exec()
     .then((user) => user.toObject())
 
 export const createUser = (values: Record<string, any>) =>
