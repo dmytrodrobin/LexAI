@@ -5,5 +5,27 @@ services:
       context: ./rag           
       dockerfile: Dockerfile  
     ports:
-      - "8000:8000"        
-    restart: always         
+      - 8000:8000     
+    restart: always
+
+  backend:
+    image: backend
+    environment:
+      MONGO_URL: mongodb://mongo:27017/mydatabase
+      RAG_URL: http://fastapi-server:8000/generate
+    build:
+      context: ./back           
+      dockerfile: Dockerfile  
+    ports:
+      - 3000:3000
+      
+  mongo:
+      image: mongo:6.0
+      container_name: mongodb
+      ports:
+        - "27017:27017"
+      volumes:
+        - mongo-data:/data/db
+
+volumes:
+  mongo-data:
