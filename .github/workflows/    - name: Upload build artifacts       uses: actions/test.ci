@@ -1,0 +1,17 @@
+name: test
+
+defaults:
+  run:
+    working-directory: front
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - run: ls
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: frontend-build
+        path: dist
