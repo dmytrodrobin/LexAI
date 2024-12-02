@@ -10,11 +10,14 @@ import mongoose from "mongoose"
 
 const app = express()
 
-app.use(
-  cors({
-    credentials: true,
-  })
-)
+const corsOptions = {
+  origin: (origin: any, callback: any) => {
+    callback(null, origin || '*');
+  },
+  credentials: true,
+};
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 app.use(compression())
 app.use(cookieParser())
