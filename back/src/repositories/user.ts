@@ -22,6 +22,23 @@ export const getUserByToken = (sessionToken: string) =>
     "auth.sessionToken": sessionToken,
   })
 
+export const getUserWithConversationsByToken = (sessionToken: string) =>
+  UserModel.findOne({
+    "auth.sessionToken": sessionToken,
+  })
+    .populate({
+      path: "conversations",
+      options: {
+        sort: { updatedAt: "desc" },
+        populate: {
+          path: "messages",
+          options: { sort: { createdAt: "asc" }, limit: 1 },
+        },
+      },
+    })
+    .exec()
+    .then((user) => user.toObject())
+
 export const getUserById = (id: string | Types.ObjectId) =>
   UserModel.findById(id)
     .populate({
@@ -33,7 +50,8 @@ export const getUserById = (id: string | Types.ObjectId) =>
           options: { sort: { createdAt: "asc" }, limit: 1 },
         },
       },
-    }).exec()
+    })
+    .exec()
     .then((user) => user.toObject())
 
 export const createUser = (values: Record<string, any>) =>

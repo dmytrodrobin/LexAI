@@ -17,6 +17,8 @@ export async function sendConversationRequest(
     const { conversationId, text } = req.body
     let conversation
 
+    console.log(req.body)
+
     if (conversationId) {
       conversation = await getConversationById(conversationId)
 
