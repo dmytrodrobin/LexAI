@@ -28,7 +28,6 @@ jobs:
     - name: Install frontend dependencies
       run: npm install
 
-      # Step 5: Build the frontend
     - name: Build frontend
       run: npm run build
 
@@ -36,4 +35,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: frontend-build
-        path: ./dist
+        path: dist
